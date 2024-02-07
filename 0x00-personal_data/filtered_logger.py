@@ -41,4 +41,8 @@ def get_logger() -> logging.Logger:
         Function that returns a logger.Logger instance
     """
     user_data = logging.Logger('user_data', logging.INFO)
+    user_data.propagate = False
+    stream = logging.StreamHandler()
+    stream.setFormatter(RedactingFormatter.format(PII_FIELDS))
+    user_data.addHandler(stream)
     return user_data
