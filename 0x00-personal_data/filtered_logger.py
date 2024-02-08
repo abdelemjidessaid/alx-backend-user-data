@@ -54,18 +54,36 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     """
         Function that returns a MYSQL connector
     """
-    # Get credentials from environment variables
-    username = os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
-    password = os.environ.get('PERSONAL_DATA_DB_PASSWORD', '')
-    host = os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
-    database = os.environ.get('PERSONAL_DATA_DB_NAME')
 
-    # Create a connection to the database
-    connection = mysql.connector.connect(
-        host=host,
-        user=username,
-        password=password,
-        database=database
+    # Create a connection to the database and return it directly
+    return mysql.connector.connect(
+        host=os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost'),
+        user=os.environ.get('PERSONAL_DATA_DB_USERNAME', 'root'),
+        password=os.environ.get('PERSONAL_DATA_DB_PASSWORD', ''),
+        database=os.environ.get('PERSONAL_DATA_DB_NAME')
     )
 
-    return connection
+
+def main():
+    """
+        Function that retrieve data from database and print it
+    """
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM users;')
+    result = cursor.fetchall()
+    for row in result:
+        message = 'name={}; email={}; phone={}; ssn={}; password={};'.format(
+            row[0], row[1], row[2], row[3], row[4])
+        print(message)
+        log = logging.LogRecord(
+            'my_logger', logging.INFO, None, None, message, None, None)
+        formatter = RedactingFormatter(PII_FIELDS)
+        formatter.format(log)
+    cursor.close()
+    db.close()
+
+
+if __name__ == '__main__':
+    """ Entry point of the Module """
+    main()
