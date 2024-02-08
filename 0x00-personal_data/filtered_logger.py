@@ -55,8 +55,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         Function that returns a MYSQL connector
     """
     return mysql.connector.connect(
-        host=os.getenv("PERSONAL_DATA_DB_HOST", "root"),
-        database=os.getenv("PERSONAL_DATA_DB_NAME"),
-        user=os.getenv("PERSONAL_DATA_DB_USERNAME", "localhost"),
-        password=os.getenv("PERSONAL_DATA_DB_PASSWORD", ""),
-    )
+                    host=os.environ.get('PERSONAL_DATA_DB_HOST', 'localhost'),
+                    database=os.environ.get('PERSONAL_DATA_DB_NAME', 'root'),
+                    user=os.environ.get('PERSONAL_DATA_DB_USERNAME'),
+                    password=os.environ.get('PERSONAL_DATA_DB_PASSWORD', ''))
