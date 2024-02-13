@@ -19,7 +19,7 @@ class BasicAuth(Auth):
 
     def extract_base64_authorization_header(
             self, authorization_header: str) -> str:
-        """ Function that generates and returns a Base64 Authorization
+        """ Method that generates and returns a Base64 Authorization
         """
         if not authorization_header:
             return None
@@ -32,7 +32,7 @@ class BasicAuth(Auth):
 
     def decode_base64_authorization_header(
             self, base64_authorization_header: str) -> str:
-        """ Function that decodes the Base64
+        """ Method that decodes the Base64
         """
         if not base64_authorization_header:
             return None
@@ -49,7 +49,7 @@ class BasicAuth(Auth):
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str
             ) -> (str, str):  # type: ignore
-        """ Function that return the User email and password
+        """ Method that return the User email and password
         """
         if not decoded_base64_authorization_header:
             return (None, None)
@@ -81,3 +81,16 @@ class BasicAuth(Auth):
         except KeyError:
             return None
         return None
+
+    def current_user(self, request=None) -> TypeVar('User'):  # type: ignore
+        """ Method that overloads the Auth and retrieves the User instance
+        """
+        try:
+            header = self.authorization_header(request)
+            extracted_base64 = self.extract_base64_authorization_header(header)
+            decoded = self.decode_base64_authorization_header(extracted_base64)
+            credentials = self.extract_user_credentials(decoded)
+            return self.user_object_from_credentials(
+                credentials[0], credentials[1])
+        except Exception:
+            return None
