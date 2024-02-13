@@ -16,6 +16,9 @@ auth = None
 if os.environ.get('AUTH_TYPE') == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
+elif os.environ.get('AUTH_TYPE') == 'basic_auth':
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
 
 
 @app.errorhandler(404)
