@@ -31,9 +31,10 @@ class Auth:
         return not(path in excluded_paths)
 
     def authorization_header(self, request=None) -> str:
-        """ Method that check the authorizations
+        """ Method that check the authorization of headers
         """
-        return None
+        if request:
+            return request.headers.get('Authorization')
 
     def current_user(self, request=None) -> TypeVar('User'):  # type: ignore
         """ Method that returns the user
