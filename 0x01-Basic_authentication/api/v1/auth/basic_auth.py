@@ -66,9 +66,9 @@ class BasicAuth(Auth):
             ) -> TypeVar('User'):  # type: ignore
         """ Method that returns the User based on its email and password
         """
-        if not user_email or type(user_email) is not str:
+        if not user_email or not isinstance(user_email, str):
             return None
-        if not user_pwd or type(user_pwd) is not str:
+        if not user_pwd or not isinstance(user_pwd, str):
             return None
 
         users = User.search({'email': user_email})
