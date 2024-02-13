@@ -15,3 +15,16 @@ class BasicAuth(Auth):
         """ Class constructure
         """
         super().__init__()
+
+    def extract_base64_authorization_header(
+            self, authorization_header: str) -> str:
+        """ Function that generates and returns a Base64 Authorization
+        """
+        if not authorization_header:
+            return None
+        if type(authorization_header) is not str:
+            return None
+        if not authorization_header.startswith('Basic '):
+            return None
+        else:
+            return authorization_header.split(' ')[1]
