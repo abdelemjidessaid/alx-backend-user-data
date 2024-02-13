@@ -22,10 +22,12 @@ class Auth:
             return True
         if path[-1] == '/':
             tmp = path[:-1]
-            if tmp in excluded_paths: return False
+            if tmp in excluded_paths:
+                return False
         else:
             tmp = path + '/'
-            if tmp in excluded_paths: return False
+            if tmp in excluded_paths:
+                return False
         return not(path in excluded_paths)
 
     def authorization_header(self, request=None) -> str:
