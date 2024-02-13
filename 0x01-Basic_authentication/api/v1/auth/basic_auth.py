@@ -43,5 +43,5 @@ class BasicAuth(Auth):
                 base64_authorization_header.encode('utf-8')
             )
             return result.decode('utf-8')
-        except:
+        except ValueError:
             return None
