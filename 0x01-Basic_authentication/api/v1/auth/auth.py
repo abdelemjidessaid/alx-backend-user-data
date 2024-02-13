@@ -20,15 +20,13 @@ class Auth:
         """
         if not path or not excluded_paths or len(excluded_paths) == 0:
             return True
-        if path[-1] == '/':
-            tmp = path[:-1]
-            if tmp in excluded_paths:
-                return False
-        else:
-            tmp = path + '/'
-            if tmp in excluded_paths:
-                return False
-        return not(path in excluded_paths)
+        if path[-1] != '/':
+            path += '/'
+        for p in excluded_paths:
+            if p.endswith('*'):
+                if path.startswith(p[:1]):
+                    return False
+        return False if path in excluded_paths else True
 
     def authorization_header(self, request=None) -> str:
         """ Method that check the authorization of headers
