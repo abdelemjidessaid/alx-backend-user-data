@@ -21,8 +21,8 @@ class SessionAuth(Auth):
     def create_session(self, user_id: str = None) -> str:
         """ Function that creates new session
         """
-        if not user_id or type(user_id) is not str:
+        if not user_id or not isinstance(user_id, str):
             return None
-        id = uuid4()
+        id = str(uuid4())
         self.user_id_by_session_id[id] = user_id
         return id
