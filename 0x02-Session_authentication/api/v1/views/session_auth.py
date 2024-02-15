@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """ Module of Session Authentication view
 """
 from flask import jsonify, abort, request
