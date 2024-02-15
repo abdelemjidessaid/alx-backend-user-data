@@ -30,7 +30,7 @@ def login():
             return jsonify({"error": "wrong password"}), 401
         from api.v1.app import auth
         session_id = auth.create_session(user.id)
-        session_name = getenv('SESSION_NAME')
         response = jsonify(user.to_json())
-        return response.set_cookie(session_name, session_id)
+        response.set_cookie(getenv('SESSION_NAME'), session_id)
+        return response
     return jsonify({"error": "no user found for this email"}), 404
