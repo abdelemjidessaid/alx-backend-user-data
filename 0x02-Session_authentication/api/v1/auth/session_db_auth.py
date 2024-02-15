@@ -15,12 +15,13 @@ class SessionDBAuth(SessionExpAuth):
     def create_session(self, user_id=None):
         """Create session
         """
-        if user_id:
-            session_id = super().create_session(user_id)
-            us = UserSession(user_id=user_id, session_id=session_id)
-            us.save()
-            UserSession.save_to_file()
-            return session_id
+        if not user_id:
+            return None
+        session_id = super().create_session(user_id)
+        us = UserSession(user_id=user_id, session_id=session_id)
+        us.save()
+        UserSession.save_to_file()
+        return session_id
 
     def user_id_for_session_id(self, session_id=None):
         """Get user ID from session
@@ -34,6 +35,7 @@ class SessionDBAuth(SessionExpAuth):
             if u.created_at + delta < datetime.now():
                 return None
             return u.user_id
+        return None
 
     def destroy_session(self, request=None):
         """Delete the user session / log out
