@@ -18,6 +18,8 @@ class SessionDBAuth(SessionExpAuth):
         if not user_id:
             return None
         session_id = super().create_session(user_id)
+        if not session_id:
+            return None
         us = UserSession(user_id=user_id, session_id=session_id)
         us.save()
         UserSession.save_to_file()
@@ -51,7 +53,12 @@ class SessionDBAuth(SessionExpAuth):
                 return False
             if not self.user_id_for_session_id(session_id):
                 return False
-            users = UserSession.search({'session_id': session_id})
+            try:
+                users = UserSession.search({'session_id': session_id})
+            except Exception:
+                return False
+            if not users:
+                return False
             for u in users:
                 u.remove()
                 UserSession.save_to_file()
