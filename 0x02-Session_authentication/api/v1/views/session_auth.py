@@ -2,7 +2,7 @@
 """ Module of Session Authentication view
 """
 from flask import jsonify, abort, request
-import os
+from os import getenv
 from api.v1.views import app_views
 from models.user import User
 
@@ -30,7 +30,7 @@ def login():
             return jsonify({"error": "wrong password"}), 401
         from api.v1.app import auth
         session_id = auth.create_session(user.id)
-        session_name = os.environ.get('SESSION_NAME')
+        session_name = getenv('SESSION_NAME')
         response = jsonify(user.to_json())
         return response.set_cookie(session_name, session_id)
     return jsonify({"error": "no user found for this email"}), 404
