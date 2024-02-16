@@ -55,18 +55,15 @@ def forbidden(error) -> str:
 def before_request() -> None:
     """ Function that run a passed function after each request
     """
-    paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-             '/api/v1/forbidden/', '/api/v1/auth_session/login/']
-    if not auth:
-        return None
-    if not auth.require_auth(request.path, paths):
-        return None
-    if not auth.authorization_header(request)\
-            and not auth.session_cookie(request):
-        abort(401)
-    if not auth.current_user(request):
-        abort(403)
-    request.current_user = auth.current_user(request)
+    excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
+                      '/api/v1/forbidden/', '/api/v1/auth_session/login/']
+    if auth and auth.require_auth(request.path, excluded_paths):
+        if (not auth.authorization_header(request) and
+                not auth.session_cookie(request)):
+            abort(401)
+        if not auth.current_user(request):
+            abort(403)
+        request.current_user = auth.current_user(request)
 
 
 if __name__ == "__main__":
