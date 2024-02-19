@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# change the mode to executable of all python files
+
+chmod u+x *.py

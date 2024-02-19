@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# push all file to remote repository
+
+git add .
+git commit -m "$"
+git push
