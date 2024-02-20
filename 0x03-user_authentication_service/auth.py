@@ -62,8 +62,6 @@ class Auth:
         except NoResultFound:
             return None
         if user:
-            if user.session_id:
-                return user.session_id
             session_id = _generate_uuid()
             self._db.update_user(user.id, session_id=session_id)
             return session_id
