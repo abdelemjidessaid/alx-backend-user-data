@@ -31,12 +31,13 @@ def login() -> str:
     """ Route function that log the users in """
     email = request.form.get('email')
     password = request.form.get('password')
-    valid_auth = AUTH.valid_login(email=email, password=password)
-    if valid_auth:
-        session_id = AUTH.create_session(email=email)
-        response = jsonify({"email": email, "message": "logged in"})
-        response.set_cookie('session_id', session_id)
-        return make_response(response)
+    if email and password:
+        valid_auth = AUTH.valid_login(email=email, password=password)
+        if valid_auth:
+            session_id = AUTH.create_session(email=email)
+            response = jsonify({"email": email, "message": "logged in"})
+            response.set_cookie('session_id', session_id)
+            return make_response(response)
     abort(401)
 
 
